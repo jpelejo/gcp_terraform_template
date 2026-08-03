@@ -18,51 +18,36 @@ Here is how the files and folders are structured and created:
 
 ```text
 terraform-gke-vault/
-├── .gitignore
-├── README.md
-├── main.tf                     # Root placeholder (environments are separate workspaces)
-├── providers.tf                # Provider configurations (google, helm, kubernetes, vault)
-├── versions.tf                 # Terraform and provider version constraints
-├── modules/                    # Reusable, versioned modules
-│   ├── gke/                    # GKE cluster module
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   └── outputs.tf
-│   └── vault/                  # Vault (Helm) module
-│       ├── main.tf
-│       ├── variables.tf
-│       └── outputs.tf
-├── environments/               # Environment-specific configurations
+├── global/                      # Run once per org/project, before environments
+│   ├── bootstrap/               # Creates the GCS remote-state bucket
+│   └── org-policies/            # Org/project-level security guardrails
+│
+├── modules/                     # Parent building blocks (reusable, versioned, environment-agnostic)
+│   ├── network/                 # VPC, subnet, secondary ranges, Cloud NAT
+│   ├── iam/                     # Service accounts + Workload Identity bindings
+│   ├── gke/                     # GKE cluster + node pools
+│   └── vault/                   # Vault Helm release, KMS auto-unseal, GCS storage
+│
+├── environments/                # Child overlays — one per environment
 │   ├── dev/
-│   │   ├── main.tf             # Calls gke and vault modules
-│   │   ├── variables.tf        # Variable declarations
-│   │   ├── terraform.tfvars    # Example values (replace with your actual values)
-│   │   ├── providers.tf        # Provider configs (copied from root)
-│   │   └── versions.tf         # Version constraints (copied from root)
 │   ├── qa/
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── terraform.tfvars
-│   │   ├── providers.tf
-│   │   └── versions.tf
 │   ├── uat/
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── terraform.tfvars
-│   │   ├── providers.tf
-│   │   └── versions.tf
-│   ├── pre-prod/
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── terraform.tfvars
-│   │   ├── providers.tf
-│   │   └── versions.tf
+│   ├── preprod/
 │   └── prod/
-│       ├── main.tf
-│       ├── variables.tf
-│       ├── terraform.tfvars
-│       ├── providers.tf
-│       └── versions.tf
+│       ├── backend.tf           # Remote state config (unique prefix per env)
+│       ├── provider.tf          # Provider + version pins
+│       ├── variables.tf         # Environment-specific variable declarations
+│       ├── terraform.tfvars     # Environment-specific values (edit before apply)
+│       ├── main.tf              # Wires modules together
+│       └── outputs.tf
+│
+├── docs/
+│   ├── TOGAF-alignment.md
+│   └── architecture-decision-records/
+│       └── ADR-001-gke-vault-architecture.md
+│
+└── scripts/
+    └── init-env.sh              # Convenience wrapper for terraform init/plan/apply per env
 
 
 ```
