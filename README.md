@@ -14,7 +14,7 @@ Using a parent / child folder structure helps structure the files in a way where
 Here is how the files and folders are structured and created:
 
 <details>
-  ```text
+  ```
 terraform-gke-vault/
 ├── .gitignore
 ├── README.md
