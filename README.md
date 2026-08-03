@@ -13,3 +13,51 @@ Using a parent / child folder structure helps structure the files in a way where
 
 Here is how the files and folders are structured and created:
 
+'''
+terraform-gke-vault/
+├── .gitignore
+├── README.md
+├── main.tf                     # Root placeholder (environments are separate workspaces)
+├── providers.tf                # Provider configurations (google, helm, kubernetes, vault)
+├── versions.tf                 # Terraform and provider version constraints
+├── modules/                    # Reusable, versioned modules
+│   ├── gke/                    # GKE cluster module
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   └── vault/                  # Vault (Helm) module
+│       ├── main.tf
+│       ├── variables.tf
+│       └── outputs.tf
+├── environments/               # Environment-specific configurations
+│   ├── dev/
+│   │   ├── main.tf             # Calls gke and vault modules
+│   │   ├── variables.tf        # Variable declarations
+│   │   ├── terraform.tfvars    # Example values (replace with your actual values)
+│   │   ├── providers.tf        # Provider configs (copied from root)
+│   │   └── versions.tf         # Version constraints (copied from root)
+│   ├── qa/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── terraform.tfvars
+│   │   ├── providers.tf
+│   │   └── versions.tf
+│   ├── uat/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── terraform.tfvars
+│   │   ├── providers.tf
+│   │   └── versions.tf
+│   ├── pre-prod/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── terraform.tfvars
+│   │   ├── providers.tf
+│   │   └── versions.tf
+│   └── prod/
+│       ├── main.tf
+│       ├── variables.tf
+│       ├── terraform.tfvars
+│       ├── providers.tf
+│       └── versions.tf
+'''
