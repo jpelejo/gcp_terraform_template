@@ -14,6 +14,18 @@ Using a parent / child folder structure helps structure the files in a way where
 Here is how the files and folders are structured and created:
 
 <details>
+  <summary>Click to expand project structure</summary>
+
+```text
+my-project/
+├── src/
+└── package.json
+```
+
+</details>
+
+
+<details>
   ```
 terraform-gke-vault/
 ├── .gitignore
