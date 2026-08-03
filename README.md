@@ -3,13 +3,13 @@
 
 The purpose of creating the repository is to give an example of how to create a multi environment template with vault capabilities.  
 
-Best practice is to have the Terraform files
+Best practice when creating the Terraform files is to have:
 1.  No hard coded values
 2.  Save in an encrypted storage area with limited access
 3.  Enable the versioning for the storage area
 4.  Use the vault and Secrets Manager to hide credentials that may be used for datasources, APIs, etc.
+5.  Follow the TOGAF Architecture Development Method - https://www.advisedskills.com/blog/enterprise-architecture/togaf-architecture-development-method-explained
 
-Using a parent / child folder structure helps structure the files in a way where if there are common attributes such as provider information, it is not repeated in the child folders and derived from the parent folders.  
 
 Here is how the files and folders are structured and created:
 
