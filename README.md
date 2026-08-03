@@ -9,14 +9,54 @@ Best practice is to have the Terraform files
 3.  Enable the versioning for the storage area
 4.  Use the vault and Secrets Manager to hide credentials that may be used for datasources, APIs, etc.
 
-Using a parent / child folder structure helps structure the files in a way where if there are common attributes such as provider information, it is not repeated in the child folders and derived from the parent folders.  Also following the TOGAF principles makes sure that the following is incorporated:
+Using a parent / child folder structure helps structure the files in a way where if there are common attributes such as provider information, it is not repeated in the child folders and derived from the parent folders.  
 
-| TOGAF Phase                            | Folder Mapping                                           | Purpose                                                |
-| -------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------ |
-| **Phase B: Business Architecture**     | `environments/`, `env.hcl`                               | Environment partitions reflecting organizational units |
-| **Phase C: Info Systems**              | `modules/compute/`, `modules/platform/`, `modules/data/` | Application & data architecture layers                 |
-| **Phase D: Technology Architecture**   | `modules/foundation/`, `modules/security/`               | Network, IAM, KMS, firewall infrastructure             |
-| **Phase E: Opportunities & Solutions** | `modules/` interfaces                                    | Reusable, composable building blocks                   |
-| **Phase F: Migration Planning**        | `environments/*/0*-*/`                                   | Sequential layer deployment (01 → 05)                  |
-| **Phase G: Implementation Governance** | `policies/`, `.github/workflows/`                        | Sentinel/OPA policies, CI/CD gates                     |
-| **Phase H: Change Management**         | `docs/architecture-decision-records/`                    | Track architectural evolution                          |
+Here is how the files and folders are structured and created:
+
+terraform-gke-vault/
+├── .gitignore
+├── README.md
+├── main.tf                     # Root placeholder (environments are separate workspaces)
+├── providers.tf                # Provider configurations (google, helm, kubernetes, vault)
+├── versions.tf                 # Terraform and provider version constraints
+├── modules/                    # Reusable, versioned modules
+│   ├── gke/                    # GKE cluster module
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   └── vault/                  # Vault (Helm) module
+│       ├── main.tf
+│       ├── variables.tf
+│       └── outputs.tf
+├── environments/               # Environment-specific configurations
+│   ├── dev/
+│   │   ├── main.tf             # Calls gke and vault modules
+│   │   ├── variables.tf        # Variable declarations
+│   │   ├── terraform.tfvars    # Example values (replace with your actual values)
+│   │   ├── providers.tf        # Provider configs (copied from root)
+│   │   └── versions.tf         # Version constraints (copied from root)
+│   ├── qa/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── terraform.tfvars
+│   │   ├── providers.tf
+│   │   └── versions.tf
+│   ├── uat/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── terraform.tfvars
+│   │   ├── providers.tf
+│   │   └── versions.tf
+│   ├── pre-prod/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── terraform.tfvars
+│   │   ├── providers.tf
+│   │   └── versions.tf
+│   └── prod/
+│       ├── main.tf
+│       ├── variables.tf
+│       ├── terraform.tfvars
+│       ├── providers.tf
+│       └── versions.tf
+
