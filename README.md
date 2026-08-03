@@ -94,7 +94,6 @@ terraform-gke-vault
 └── scripts
     └── init-env.sh
 
-
 ```
 
 </details>
