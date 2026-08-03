@@ -17,37 +17,82 @@ Here is how the files and folders are structured and created:
   <summary>Click to expand project structure</summary>
 
 ```text
-terraform-gke-vault/
-├── global/                      # Run once per org/project, before environments
-│   ├── bootstrap/               # Creates the GCS remote-state bucket
-│   └── org-policies/            # Org/project-level security guardrails
-│
-├── modules/                     # Parent building blocks (reusable, versioned, environment-agnostic)
-│   ├── network/                 # VPC, subnet, secondary ranges, Cloud NAT
-│   ├── iam/                     # Service accounts + Workload Identity bindings
-│   ├── gke/                     # GKE cluster + node pools
-│   └── vault/                   # Vault Helm release, KMS auto-unseal, GCS storage
-│
-├── environments/                # Child overlays — one per environment
-│   ├── dev/
-│   ├── qa/
-│   ├── uat/
-│   ├── preprod/
-│   └── prod/
-│       ├── backend.tf           # Remote state config (unique prefix per env)
-│       ├── provider.tf          # Provider + version pins
-│       ├── variables.tf         # Environment-specific variable declarations
-│       ├── terraform.tfvars     # Environment-specific values (edit before apply)
-│       ├── main.tf              # Wires modules together
-│       └── outputs.tf
-│
-├── docs/
-│   ├── TOGAF-alignment.md
-│   └── architecture-decision-records/
-│       └── ADR-001-gke-vault-architecture.md
-│
-└── scripts/
-    └── init-env.sh              # Convenience wrapper for terraform init/plan/apply per env
+
+terraform-gke-vault
+├── docs
+│   ├── architecture-decision-records
+│   │   └── ADR-001-gke-vault-architecture.md
+│   └── TOGAF-alignment.md
+├── environments
+│   ├── dev
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── provider.tf
+│   │   ├── terraform.tfvars
+│   │   └── variables.tf
+│   ├── preprod
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── provider.tf
+│   │   ├── terraform.tfvars
+│   │   └── variables.tf
+│   ├── prod
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── provider.tf
+│   │   ├── terraform.tfvars
+│   │   └── variables.tf
+│   ├── qa
+│   │   ├── backend.tf
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── provider.tf
+│   │   ├── terraform.tfvars
+│   │   └── variables.tf
+│   └── uat
+│       ├── backend.tf
+│       ├── main.tf
+│       ├── outputs.tf
+│       ├── provider.tf
+│       ├── terraform.tfvars
+│       └── variables.tf
+├── global
+│   ├── bootstrap
+│   │   └── main.tf
+│   └── org-policies
+│       └── main.tf
+├── modules
+│   ├── gke
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── variables.tf
+│   │   └── versions.tf
+│   ├── iam
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── variables.tf
+│   │   └── versions.tf
+│   ├── nat
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── variables.tf
+│   │   └── versions.tf
+│   ├── network
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── variables.tf
+│   │   └── versions.tf
+│   └── vault
+│       ├── main.tf
+│       ├── outputs.tf
+│       ├── variables.tf
+│       └── versions.tf
+├── README.md
+└── scripts
+    └── init-env.sh
 
 
 ```
